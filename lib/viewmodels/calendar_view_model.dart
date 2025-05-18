@@ -103,4 +103,11 @@ class CalendarViewModel extends ChangeNotifier {
     // 默认灰色
     return Colors.grey.shade300;
   }
+
+  // 更新焦点日期
+  void updateFocusedDay(DateTime newFocusedDay) {
+    _focusedDay = newFocusedDay;
+    _selectedDay = newFocusedDay;
+    notifyListeners();
+  }
 }

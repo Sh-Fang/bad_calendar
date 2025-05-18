@@ -40,13 +40,13 @@ class DayCell extends StatelessWidget {
           Text(
             '${day.day}',
             style: TextStyle(
-              fontSize: 12,
+              fontSize: 16,
               fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
               color: isToday ? Colors.blue : Colors.black,
             ),
           ),
           const SizedBox(height: 2),
-          Container(
+          SizedBox(
             height: 12,
             child: Row(
               children:

@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '坏习惯时间段记录',
+      title: 'Bad Calendar',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: const CalendarPage(),
     );

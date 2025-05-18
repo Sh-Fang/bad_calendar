@@ -25,7 +25,7 @@ class _CalendarPageContent extends StatelessWidget {
     final viewModel = Provider.of<CalendarViewModel>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('坏习惯时间段记录')),
+      appBar: AppBar(title: const Text('Bad Calendar 自控力')),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -37,9 +37,8 @@ class _CalendarPageContent extends StatelessWidget {
                   (day) =>
                       viewModel.selectedDay != null &&
                       isSameDay(day, viewModel.selectedDay),
-              onDaySelected: (selectedDay, focusedDay) {
-                viewModel.selectDay(selectedDay);
-              },
+              onDaySelected:
+                  (selectedDay, focusedDay) => viewModel.selectDay(selectedDay),
               calendarBuilders: CalendarBuilders(
                 defaultBuilder:
                     (context, day, focusedDay) =>
@@ -51,54 +50,30 @@ class _CalendarPageContent extends StatelessWidget {
                     (context, day, focusedDay) =>
                         DayCell(day: day, isSelected: false, isToday: true),
               ),
+              onPageChanged: (focusedDay) {
+                viewModel.updateFocusedDay(focusedDay);
+              },
               calendarFormat: CalendarFormat.month,
               startingDayOfWeek: StartingDayOfWeek.monday,
               headerStyle: const HeaderStyle(
-                formatButtonVisible: false,
+                formatButtonVisible: true,
                 titleCentered: true,
               ),
-              availableCalendarFormats: const {CalendarFormat.month: '月'},
-              rowHeight: 60,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                final viewModel = context.read<CalendarViewModel>();
-                if (viewModel.selectedDay == null) {
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(const SnackBar(content: Text('请先选择日期')));
-                  return;
-                }
-
-                if (!viewModel.isToday(viewModel.selectedDay!)) {
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(const SnackBar(content: Text('只能记录当天时间段')));
-                  return;
-                }
-
-                viewModel.toggleRecord();
+              availableCalendarFormats: const {
+                CalendarFormat.month: '月',
+                // CalendarFormat.week: '周', // TODO: 周视图有BUG不能切换
               },
-              child: const Text('记录当前时间段'),
+              calendarStyle: const CalendarStyle(outsideDaysVisible: false),
+              rowHeight: 100,
             ),
-            const SizedBox(height: 20),
-            ElevatedButton.icon(
-              onPressed: () => viewModel.selectToday(),
-              icon: const Icon(Icons.calendar_today),
-              label: const Text('回到今天'),
-            ),
-            const SizedBox(height: 20),
-            if (viewModel.selectedDay != null)
-              Text(
-                '选择日期：${viewModel.selectedDay!.toLocal().toString().split(' ')[0]}',
-                style: const TextStyle(fontSize: 16),
-              ),
-            const SizedBox(height: 10),
           ],
         ),
       ),
-      floatingActionButton: _FloatingActionButton(),
+
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 30, right: 20),
+        child: _FloatingActionButton(),
+      ),
     );
   }
 }
@@ -109,12 +84,22 @@ class _FloatingActionButton extends StatelessWidget {
     final viewModel = Provider.of<CalendarViewModel>(context);
     final today = DateTime.now();
 
+    final boxWidth = 70.0;
+    final boxHeight = 70.0;
+    final iconSize = 37.0;
+
     // 如果没有选择今天，显示"今"按钮
     if (viewModel.selectedDay == null ||
         !viewModel.isToday(viewModel.selectedDay!)) {
-      return FloatingActionButton(
-        onPressed: () => viewModel.selectToday(),
-        child: const Text('今'),
+      return SizedBox(
+        width: boxWidth,
+        height: boxHeight,
+        child: FloatingActionButton(
+          onPressed: () => viewModel.selectToday(),
+          backgroundColor: Theme.of(context).colorScheme.onTertiary,
+          shape: const CircleBorder(),
+          child: Icon(Icons.reply, color: Colors.blueAccent, size: iconSize),
+        ),
       );
     }
 
@@ -122,11 +107,20 @@ class _FloatingActionButton extends StatelessWidget {
     final currentPeriod = viewModel.getCurrentTimePeriod();
     final isRecorded = viewModel.isRecorded(today, currentPeriod);
 
-    return FloatingActionButton(
-      onPressed: () => viewModel.toggleRecord(),
-      backgroundColor: isRecorded ? Colors.red : Colors.blue,
-      tooltip: isRecorded ? '删除记录' : '记录当前时间段',
-      child: Icon(isRecorded ? Icons.remove_circle : Icons.add_circle),
+    return SizedBox(
+      width: boxWidth,
+      height: boxHeight,
+      child: FloatingActionButton(
+        onPressed: () => viewModel.toggleRecord(),
+        backgroundColor: Theme.of(context).colorScheme.onTertiary,
+        shape: const CircleBorder(),
+        tooltip: isRecorded ? '删除记录' : '添加记录',
+        child: Icon(
+          isRecorded ? Icons.event_busy : Icons.event_available,
+          color: isRecorded ? Colors.red : Colors.green,
+          size: iconSize,
+        ),
+      ),
     );
   }
 }
