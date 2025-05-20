@@ -42,7 +42,7 @@ class DayCell extends StatelessWidget {
           Text(
             '${day.day}',
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 18,
               fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
               color: isToday ? Colors.blue : Colors.black,
             ),
@@ -58,7 +58,10 @@ class DayCell extends StatelessWidget {
                     return Expanded(
                       child: Container(
                         margin: const EdgeInsets.all(1),
-                        color: color,
+                        decoration: BoxDecoration(
+                          color: color,
+                          borderRadius: BorderRadius.circular(2), // 设置圆角半径
+                        ),
                       ),
                     );
                   }).toList(),

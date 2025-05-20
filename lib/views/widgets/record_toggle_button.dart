@@ -43,7 +43,7 @@ class RecordToggleButton extends StatelessWidget {
           tooltip: isRecorded ? '删除记录' : '添加记录',
           child: Icon(
             isRecorded ? Icons.event_busy : Icons.event_available,
-            color: isRecorded ? Colors.red : Colors.green,
+            color: isRecorded ? Colors.green : Colors.red,
             size: iconSize,
           ),
         ),

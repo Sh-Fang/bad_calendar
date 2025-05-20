@@ -1,5 +1,5 @@
 // lib/main.dart
-import 'package:bad_calendar/views/calendar_page.dart';
+import 'package:bad_calendar/views/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Bad Calendar',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const CalendarPage(),
+      home: const HomePage(),
     );
   }
 }

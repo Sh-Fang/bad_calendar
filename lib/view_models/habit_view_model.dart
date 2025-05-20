@@ -56,15 +56,6 @@ class HabitViewModel extends ChangeNotifier {
     // 如果有记录，则红色
     if (hasRecord(thisDay, period)) {
       return Colors.red;
-    } else {
-      // 如果是今天，并且时间段小于当前时间段，则绿色
-      if (thisDay == today && period.index < getCurrentTimePeriod().index) {
-        return Colors.green;
-      }
-      // 如果是过去，也是绿色
-      else if (thisDay.isBefore(today)) {
-        return Colors.green;
-      }
     }
 
     // 如果是未来或者当前时间段没有记录，则灰色
