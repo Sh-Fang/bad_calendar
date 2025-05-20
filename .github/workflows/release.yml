@@ -1,0 +1,42 @@
+name: Build and Release Flutter APK
+
+on:
+  push:
+    tags:
+      - 'v*'   # 仅在 push tag 时触发，如 v1.0.0
+    branches:
+      - main   # 或者你希望默认在 main 分支 push 时触发
+
+jobs:
+  build:
+    name: Build Flutter APK
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.29.3' # 根据你的 Flutter 版本填写
+        channel: stable
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Build APK
+      run: flutter build apk --release
+
+    - name: Rename APK with app name and version
+      run: |
+        TAG_NAME=${GITHUB_REF##*/}  # 提取 tag 名，如 v1.0.0
+        APP_NAME="Bad Calendar"
+        mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/${APP_NAME}-${TAG_NAME}.apk
+
+    - name: Upload Release APK
+      uses: softprops/action-gh-release@v1
+      with:
+        files: build/app/outputs/flutter-apk/MyCoolApp-*.apk
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
