@@ -28,15 +28,15 @@ jobs:
     - name: Build APK
       run: flutter build apk --release
 
-    - name: Rename APK with app name and version
+    - name: Rename APK with version tag
       run: |
-        TAG_NAME=${GITHUB_REF##*/}  # 提取 tag 名，如 v1.0.0
-        APP_NAME="Bad Calendar"
-        mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/${APP_NAME}-${TAG_NAME}.apk
+        APP_NAME="Bad_Calendar"
+        TAG_NAME=${GITHUB_REF##*/}
+        mv "build/app/outputs/flutter-apk/app-release.apk" "build/app/outputs/flutter-apk/${APP_NAME}-v${TAG_NAME}.apk"
 
     - name: Upload Release APK
       uses: softprops/action-gh-release@v1
       with:
-        files: build/app/outputs/flutter-apk/MyCoolApp-*.apk
+        files: build/app/outputs/flutter-apk/Bad_Calendar-${{ github.ref_name }}.apk
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
