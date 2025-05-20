@@ -11,18 +11,6 @@ class CalendarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => HabitViewModel()..loadAll(),
-      child: const _CalendarPageContent(),
-    );
-  }
-}
-
-class _CalendarPageContent extends StatelessWidget {
-  const _CalendarPageContent();
-
-  @override
-  Widget build(BuildContext context) {
     final viewModel = Provider.of<HabitViewModel>(context);
 
     return Scaffold(

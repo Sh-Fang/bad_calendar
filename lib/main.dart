@@ -1,9 +1,16 @@
 // lib/main.dart
+import 'package:bad_calendar/view_models/habit_view_model.dart';
 import 'package:bad_calendar/views/pages/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => HabitViewModel()..loadAll(), // 提供 ViewModel 并立即加载数据
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

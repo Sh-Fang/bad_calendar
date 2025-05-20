@@ -7,6 +7,7 @@ class HabitViewModel extends ChangeNotifier {
   final HabitRepository _repo = HabitRepository();
   Map<DateTime, HabitRecord> _records = {};
 
+  Map<DateTime, HabitRecord> get records => _records;
   DateTime get today => HabitRecord.dateOnly(DateTime.now());
 
   DateTime _focusedDay = HabitRecord.dateOnly(DateTime.now());
