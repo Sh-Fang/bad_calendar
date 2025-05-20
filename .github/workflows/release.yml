@@ -32,7 +32,7 @@ jobs:
       run: |
         APP_NAME="Bad_Calendar"
         TAG_NAME=${GITHUB_REF##*/}
-        mv "build/app/outputs/flutter-apk/app-release.apk" "build/app/outputs/flutter-apk/${APP_NAME}-v${TAG_NAME}.apk"
+        mv "build/app/outputs/flutter-apk/app-release.apk" "build/app/outputs/flutter-apk/${APP_NAME}-${TAG_NAME}.apk"
 
     - name: Upload Release APK
       uses: softprops/action-gh-release@v1
