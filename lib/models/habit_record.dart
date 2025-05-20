@@ -33,4 +33,23 @@ class HabitRecord {
 
   // 用于存储的日期格式化
   static DateTime dateOnly(DateTime dt) => DateTime(dt.year, dt.month, dt.day);
+
+  Map<String, dynamic> toMap() {
+    return {
+      'date': date.toIso8601String(),
+      'periods': recordedPeriods.map((p) => p.index).join(','), // 用逗号分隔保存
+    };
+  }
+
+  factory HabitRecord.fromMap(Map<String, dynamic> map) {
+    return HabitRecord(
+      date: DateTime.parse(map['date']),
+      recordedPeriods:
+          (map['periods'] as String)
+              .split(',')
+              .where((s) => s.isNotEmpty)
+              .map((s) => TimePeriod.values[int.parse(s)])
+              .toSet(),
+    );
+  }
 }

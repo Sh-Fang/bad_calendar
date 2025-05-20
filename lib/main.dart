@@ -1,6 +1,6 @@
 // lib/main.dart
+import 'package:bad_calendar/views/calendar_page.dart';
 import 'package:flutter/material.dart';
-import 'views/calendar_page.dart';
 
 void main() {
   runApp(const MyApp());

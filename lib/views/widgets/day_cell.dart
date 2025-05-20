@@ -1,27 +1,29 @@
 // lib/views/widgets/day_cell.dart
+import 'package:bad_calendar/models/time_period.dart';
+import 'package:bad_calendar/view_models/habit_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../models/time_period.dart';
-import '../../viewmodels/calendar_view_model.dart';
 
 class DayCell extends StatelessWidget {
   final DateTime day;
   final bool isSelected;
   final bool isToday;
+  final Color? backgroundColor; // 新增参数
 
   const DayCell({
     super.key,
     required this.day,
     required this.isSelected,
     required this.isToday,
+    this.backgroundColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<CalendarViewModel>(context);
+    final viewModel = Provider.of<HabitViewModel>(context);
 
     return Container(
-      margin: const EdgeInsets.all(4),
+      margin: const EdgeInsets.all(6),
       decoration: BoxDecoration(
         border: Border.all(
           color:
@@ -32,7 +34,7 @@ class DayCell extends StatelessWidget {
                   : Colors.transparent,
           width: 2,
         ),
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
