@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../view_models/habit_view_model.dart';
 
@@ -22,7 +23,10 @@ class RecordToggleButton extends StatelessWidget {
         width: boxWidth,
         height: boxHeight,
         child: FloatingActionButton(
-          onPressed: () => viewModel.backToToday(),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            viewModel.backToToday();
+          },
           backgroundColor: Theme.of(context).colorScheme.onTertiary,
           shape: const CircleBorder(),
           child: Icon(Icons.reply, color: Colors.blueAccent, size: iconSize),
@@ -37,7 +41,10 @@ class RecordToggleButton extends StatelessWidget {
         width: boxWidth,
         height: boxHeight,
         child: FloatingActionButton(
-          onPressed: () => viewModel.togglePeriod(today, currentPeriod),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            viewModel.togglePeriod(today, currentPeriod);
+          },
           backgroundColor: Theme.of(context).colorScheme.onTertiary,
           shape: const CircleBorder(),
           tooltip: isRecorded ? '删除记录' : '添加记录',

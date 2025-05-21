@@ -73,7 +73,7 @@ class CalendarPage extends StatelessWidget {
 
               calendarStyle: const CalendarStyle(outsideDaysVisible: false),
 
-              rowHeight: 100,
+              rowHeight: MediaQuery.of(context).size.height < 700 ? 60 : 100,
             ),
           ],
         ),
