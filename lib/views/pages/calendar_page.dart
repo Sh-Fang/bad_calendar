@@ -1,4 +1,5 @@
 // lib/views/pages/calendar_page.dart
+import 'package:bad_calendar/views/widgets/add_record_button.dart';
 import 'package:bad_calendar/views/widgets/day_cell.dart';
 import 'package:bad_calendar/views/widgets/record_toggle_button.dart';
 import 'package:flutter/material.dart';
@@ -18,23 +19,22 @@ class CalendarPage extends StatelessWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(
-                16.0,
-                16.0,
-                0.0,
-                16.0,
-              ), // 左 上 右 下
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  '${viewModel.focusedDay.year} / ${viewModel.focusedDay.month}',
-                  style: const TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
+              padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${viewModel.focusedDay.year} / ${viewModel.focusedDay.month}',
+                    style: const TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
+                  AddRecordButton(day: viewModel.focusedDay),
+                ],
               ),
             ),
+
             TableCalendar(
               headerVisible: false,
 

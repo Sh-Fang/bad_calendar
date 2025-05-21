@@ -41,6 +41,36 @@ class HabitViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // 判断当天是否有事件
+  bool hasEvent(DateTime day) {
+    final key = HabitRecord.dateOnly(day);
+    if (_records.containsKey(key)) {
+      return true;
+    }
+    return false;
+  }
+
+  void addRecord(DateTime day, TimePeriod period) {
+    final key = HabitRecord.dateOnly(day);
+    if (_records.containsKey(key)) {
+      _records[key]!.addPeriod(period);
+    } else {
+      _records[key] = HabitRecord(date: day, recordedPeriods: {period});
+    }
+    notifyListeners();
+  }
+
+  void removeRecord(DateTime day, TimePeriod period) {
+    final key = HabitRecord.dateOnly(day);
+    if (_records.containsKey(key)) {
+      _records[key]!.removePeriod(period);
+      if (_records[key]!.recordedPeriods.isEmpty) {
+        _records.remove(key);
+      }
+    }
+    notifyListeners();
+  }
+
   // 判断是否有记录
   bool hasRecord(DateTime day, TimePeriod period) {
     final key = HabitRecord.dateOnly(day);
@@ -82,17 +112,34 @@ class HabitViewModel extends ChangeNotifier {
   // 添加/删除记录
   Future<void> togglePeriod(DateTime day, TimePeriod period) async {
     final dateOnly = HabitRecord.dateOnly(day);
-    final record = _records[dateOnly] ?? HabitRecord(date: dateOnly);
 
-    if (record.hasPeriod(period)) {
-      record.removePeriod(period);
-    } else {
+    // 1. 获取当天记录（可空）
+    HabitRecord? record = _records[dateOnly];
+
+    if (record == null) {
+      // 第一次添加记录
+      record = HabitRecord(date: dateOnly);
       record.addPeriod(period);
+      _records[dateOnly] = record;
+      await _repo.saveRecord(record);
+    } else if (!record.hasPeriod(period)) {
+      // 已有记录但没有该时间段
+      record.addPeriod(period);
+      _records[dateOnly] = record;
+      await _repo.saveRecord(record);
+    } else {
+      // 有该时间段，执行删除
+      record.removePeriod(period);
+
+      if (record.recordedPeriods.isEmpty) {
+        // 删除该天的记录
+        _records.remove(dateOnly);
+        await _repo.deleteRecord(dateOnly); // 可选，如果你有持久化操作
+      } else {
+        _records[dateOnly] = record;
+        await _repo.saveRecord(record);
+      }
     }
-
-    await _repo.saveRecord(record);
-
-    _records[dateOnly] = record;
 
     notifyListeners();
   }

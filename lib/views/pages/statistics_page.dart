@@ -30,7 +30,13 @@ class StatisticPage extends StatelessWidget {
             final date = entry.key;
             final periods = entry.value.recordedPeriods;
 
-            return RecordCard(date: date, periods: periods);
+            return RecordCard(
+              date: date,
+              periods: periods,
+              onDeletePeriod: (period) {
+                viewModel.removeRecord(date, period);
+              },
+            );
           },
         ),
       ),

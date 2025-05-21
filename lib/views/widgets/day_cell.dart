@@ -25,6 +25,7 @@ class DayCell extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.all(6),
       decoration: BoxDecoration(
+        color: viewModel.hasEvent(day) ? Colors.blue[100] : backgroundColor,
         border: Border.all(
           color:
               isSelected
