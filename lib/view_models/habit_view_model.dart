@@ -52,23 +52,27 @@ class HabitViewModel extends ChangeNotifier {
 
   void addRecord(DateTime day, TimePeriod period) {
     final key = HabitRecord.dateOnly(day);
-    if (_records.containsKey(key)) {
-      _records[key]!.addPeriod(period);
-    } else {
-      _records[key] = HabitRecord(date: day, recordedPeriods: {period});
-    }
+    final record = _records[key] ?? HabitRecord(date: key);
+    record.addPeriod(period);
+    _records[key] = record;
+
+    _repo.saveRecord(record);
     notifyListeners();
   }
 
   void removeRecord(DateTime day, TimePeriod period) {
     final key = HabitRecord.dateOnly(day);
-    if (_records.containsKey(key)) {
-      _records[key]!.removePeriod(period);
-      if (_records[key]!.recordedPeriods.isEmpty) {
+    final record = _records[key];
+    if (record != null) {
+      record.removePeriod(period);
+      if (record.recordedPeriods.isEmpty) {
         _records.remove(key);
+        _repo.deleteRecord(key);
+      } else {
+        _repo.saveRecord(record);
       }
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   // 判断是否有记录
