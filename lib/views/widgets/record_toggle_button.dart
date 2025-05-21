@@ -19,6 +19,8 @@ class RecordToggleButton extends StatelessWidget {
 
     // 如果没有选择今天，显示"今"按钮
     if (today != selectedDay) {
+      final isBeforeToday = selectedDay!.isBefore(today);
+
       return SizedBox(
         width: boxWidth,
         height: boxHeight,
@@ -29,7 +31,11 @@ class RecordToggleButton extends StatelessWidget {
           },
           backgroundColor: Theme.of(context).colorScheme.onTertiary,
           shape: const CircleBorder(),
-          child: Icon(Icons.reply, color: Colors.blueAccent, size: iconSize),
+          child: Transform(
+            alignment: Alignment.center,
+            transform: Matrix4.rotationY(isBeforeToday ? 3.1416 : 0), // 翻转图标
+            child: Icon(Icons.reply, color: Colors.blueAccent, size: iconSize),
+          ),
         ),
       );
     }

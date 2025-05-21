@@ -24,7 +24,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Bad Calendar',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.blueAccent,
+          brightness: Brightness.light,
+        ).copyWith(surface: Colors.white),
+        scaffoldBackgroundColor: Colors.white,
+      ),
       home: const HomePage(),
     );
   }
