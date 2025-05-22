@@ -1,6 +1,7 @@
-// lib/views/pages/statistics_page.dart
 import 'package:bad_calendar/view_models/habit_view_model.dart';
-import 'package:bad_calendar/views/widgets/record_card_widget.dart';
+import 'package:bad_calendar/views/widgets/grouped_record_list.dart';
+import 'package:bad_calendar/views/widgets/summary_card.dart';
+import 'package:bad_calendar/views/widgets/about_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,34 +11,36 @@ class StatisticPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<HabitViewModel>(context);
-    final records = viewModel.records;
-
-    // 过滤出有记录的
-    final nonEmptyRecords =
-        records.entries
-            .where((e) => e.value.recordedPeriods.isNotEmpty)
-            .toList()
-          ..sort((a, b) => b.key.compareTo(a.key)); // 时间倒序
 
     return Scaffold(
-      appBar: AppBar(title: const Text('统计记录'), centerTitle: true),
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: ListView.builder(
-          itemCount: nonEmptyRecords.length,
-          itemBuilder: (context, index) {
-            final entry = nonEmptyRecords[index];
-            final date = entry.key;
-            final periods = entry.value.recordedPeriods;
-
-            return RecordCard(
-              date: date,
-              periods: periods,
-              onDeletePeriod: (period) {
-                viewModel.removeRecord(date, period);
-              },
-            );
-          },
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 1,
+        title: const Text(
+          '统计记录',
+          style: TextStyle(
+            fontSize: 30,
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        iconTheme: const IconThemeData(color: Colors.black),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 26.0),
+            child: AboutButton(),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SummaryCard(viewModel: viewModel),
+            const SizedBox(height: 12),
+            GroupedRecordList(viewModel: viewModel),
+          ],
         ),
       ),
     );

@@ -34,7 +34,7 @@ class RecordCard extends StatelessWidget {
           ),
           leading: const Icon(Icons.sell, color: Colors.blueAccent),
           title: Text(
-            '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}',
+            '${date.month.toString().padLeft(2, '0')}月${date.day.toString().padLeft(2, '0')}日',
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
           subtitle: Padding(
