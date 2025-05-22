@@ -1,14 +1,15 @@
-import '../models/habit_record.dart';
+import '../models/habit_record_model.dart';
 import '../database/habit_database.dart';
 
 class HabitRepository {
   final HabitDatabase _db = HabitDatabase();
 
-  Future<void> saveRecord(HabitRecord record) => _db.insertRecord(record);
+  Future<void> saveRecord(HabitRecordModel record) => _db.insertRecord(record);
 
-  Future<List<HabitRecord>> getAllRecords() => _db.getAllRecords();
+  Future<List<HabitRecordModel>> getAllRecords() => _db.getAllRecords();
 
-  Future<HabitRecord?> getRecord(DateTime date) => _db.getRecordByDate(date);
+  Future<HabitRecordModel?> getRecord(DateTime date) =>
+      _db.getRecordByDate(date);
 
   Future<void> deleteRecord(DateTime date) => _db.deleteRecord(date);
 }

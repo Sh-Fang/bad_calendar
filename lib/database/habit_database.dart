@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import '../models/habit_record.dart';
+import '../models/habit_record_model.dart';
 
 class HabitDatabase {
   static final HabitDatabase _instance = HabitDatabase._internal();
@@ -31,7 +31,7 @@ class HabitDatabase {
     ''');
   }
 
-  Future<void> insertRecord(HabitRecord record) async {
+  Future<void> insertRecord(HabitRecordModel record) async {
     final db = await database;
     await db.insert(
       'habit_records',
@@ -40,23 +40,23 @@ class HabitDatabase {
     );
   }
 
-  Future<List<HabitRecord>> getAllRecords() async {
+  Future<List<HabitRecordModel>> getAllRecords() async {
     final db = await database;
     final maps = await db.query('habit_records');
 
-    return maps.map((map) => HabitRecord.fromMap(map)).toList();
+    return maps.map((map) => HabitRecordModel.fromMap(map)).toList();
   }
 
-  Future<HabitRecord?> getRecordByDate(DateTime date) async {
+  Future<HabitRecordModel?> getRecordByDate(DateTime date) async {
     final db = await database;
     final result = await db.query(
       'habit_records',
       where: 'date = ?',
-      whereArgs: [HabitRecord.dateOnly(date).toIso8601String()],
+      whereArgs: [HabitRecordModel.dateOnly(date).toIso8601String()],
     );
 
     if (result.isNotEmpty) {
-      return HabitRecord.fromMap(result.first);
+      return HabitRecordModel.fromMap(result.first);
     }
     return null;
   }
@@ -66,7 +66,7 @@ class HabitDatabase {
     await db.delete(
       'habit_records',
       where: 'date = ?',
-      whereArgs: [HabitRecord.dateOnly(date).toIso8601String()],
+      whereArgs: [HabitRecordModel.dateOnly(date).toIso8601String()],
     );
   }
 }

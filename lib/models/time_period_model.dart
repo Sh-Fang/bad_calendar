@@ -1,17 +1,17 @@
 // lib/models/time_period.dart
 import 'package:flutter/material.dart';
 
-enum TimePeriod { morning, noon, afternoon, evening }
+enum TimePeriodModel { morning, noon, afternoon, evening }
 
-Widget periodToIcon(TimePeriod period) {
+Widget periodToIcon(TimePeriodModel period) {
   switch (period) {
-    case TimePeriod.morning:
+    case TimePeriodModel.morning:
       return _buildIconText(Icons.wb_sunny, '早上', Colors.green);
-    case TimePeriod.noon:
+    case TimePeriodModel.noon:
       return _buildIconText(Icons.lunch_dining, '中午', Colors.orange);
-    case TimePeriod.afternoon:
+    case TimePeriodModel.afternoon:
       return _buildIconText(Icons.wb_cloudy, '下午', Colors.blue);
-    case TimePeriod.evening:
+    case TimePeriodModel.evening:
       return _buildIconText(Icons.nightlight_round, '晚上', Colors.deepPurple);
   }
 }

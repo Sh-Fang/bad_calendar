@@ -1,6 +1,6 @@
 // lib/views/pages/statistics_page.dart
 import 'package:bad_calendar/view_models/habit_view_model.dart';
-import 'package:bad_calendar/views/widgets/record_card.dart';
+import 'package:bad_calendar/views/widgets/record_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -1,17 +1,17 @@
-import 'package:bad_calendar/models/habit_record.dart';
-import 'package:bad_calendar/models/time_period.dart';
+import 'package:bad_calendar/models/habit_record_model.dart';
+import 'package:bad_calendar/models/time_period_model.dart';
 import 'package:bad_calendar/repository/habit_repository.dart';
 import 'package:flutter/material.dart';
 
 class HabitViewModel extends ChangeNotifier {
   final HabitRepository _repo = HabitRepository();
-  Map<DateTime, HabitRecord> _records = {};
+  Map<DateTime, HabitRecordModel> _records = {};
 
-  Map<DateTime, HabitRecord> get records => _records;
-  DateTime get today => HabitRecord.dateOnly(DateTime.now());
+  Map<DateTime, HabitRecordModel> get records => _records;
+  DateTime get today => HabitRecordModel.dateOnly(DateTime.now());
 
-  DateTime _focusedDay = HabitRecord.dateOnly(DateTime.now());
-  DateTime _selectedDay = HabitRecord.dateOnly(DateTime.now());
+  DateTime _focusedDay = HabitRecordModel.dateOnly(DateTime.now());
+  DateTime _selectedDay = HabitRecordModel.dateOnly(DateTime.now());
   DateTime get focusedDay => _focusedDay;
   DateTime? get selectedDay => _selectedDay;
 
@@ -23,8 +23,8 @@ class HabitViewModel extends ChangeNotifier {
 
   // 设置选中的日期
   void setSelectedDay(DateTime day) {
-    _selectedDay = HabitRecord.dateOnly(day);
-    _focusedDay = HabitRecord.dateOnly(day);
+    _selectedDay = HabitRecordModel.dateOnly(day);
+    _focusedDay = HabitRecordModel.dateOnly(day);
     notifyListeners();
   }
 
@@ -35,24 +35,24 @@ class HabitViewModel extends ChangeNotifier {
       _selectedDay = today;
       _focusedDay = today;
     } else {
-      _focusedDay = HabitRecord.dateOnly(day);
-      _selectedDay = HabitRecord.dateOnly(day);
+      _focusedDay = HabitRecordModel.dateOnly(day);
+      _selectedDay = HabitRecordModel.dateOnly(day);
     }
     notifyListeners();
   }
 
   // 判断当天是否有事件
   bool hasEvent(DateTime day) {
-    final key = HabitRecord.dateOnly(day);
+    final key = HabitRecordModel.dateOnly(day);
     if (_records.containsKey(key)) {
       return true;
     }
     return false;
   }
 
-  void addRecord(DateTime day, TimePeriod period) {
-    final key = HabitRecord.dateOnly(day);
-    final record = _records[key] ?? HabitRecord(date: key);
+  void addRecord(DateTime day, TimePeriodModel period) {
+    final key = HabitRecordModel.dateOnly(day);
+    final record = _records[key] ?? HabitRecordModel(date: key);
     record.addPeriod(period);
     _records[key] = record;
 
@@ -60,8 +60,8 @@ class HabitViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void removeRecord(DateTime day, TimePeriod period) {
-    final key = HabitRecord.dateOnly(day);
+  void removeRecord(DateTime day, TimePeriodModel period) {
+    final key = HabitRecordModel.dateOnly(day);
     final record = _records[key];
     if (record != null) {
       record.removePeriod(period);
@@ -76,8 +76,8 @@ class HabitViewModel extends ChangeNotifier {
   }
 
   // 判断是否有记录
-  bool hasRecord(DateTime day, TimePeriod period) {
-    final key = HabitRecord.dateOnly(day);
+  bool hasRecord(DateTime day, TimePeriodModel period) {
+    final key = HabitRecordModel.dateOnly(day);
     if (_records.containsKey(key)) {
       return _records[key]!.hasPeriod(period);
     }
@@ -85,8 +85,8 @@ class HabitViewModel extends ChangeNotifier {
   }
 
   // 获取单元格颜色
-  Color getCellColor(DateTime day, TimePeriod period) {
-    final thisDay = HabitRecord.dateOnly(day);
+  Color getCellColor(DateTime day, TimePeriodModel period) {
+    final thisDay = HabitRecordModel.dateOnly(day);
 
     // 如果有记录，则红色
     if (hasRecord(thisDay, period)) {
@@ -98,31 +98,31 @@ class HabitViewModel extends ChangeNotifier {
   }
 
   // 获取当前时间段
-  TimePeriod getCurrentTimePeriod() {
+  TimePeriodModel getCurrentTimePeriod() {
     final hour = DateTime.now().hour;
-    if (hour < 12) return TimePeriod.morning;
-    if (hour < 14) return TimePeriod.noon;
-    if (hour < 18) return TimePeriod.afternoon;
-    return TimePeriod.evening;
+    if (hour < 12) return TimePeriodModel.morning;
+    if (hour < 14) return TimePeriodModel.noon;
+    if (hour < 18) return TimePeriodModel.afternoon;
+    return TimePeriodModel.evening;
   }
 
   // 加载所有记录
   Future<void> loadAll() async {
     final list = await _repo.getAllRecords();
-    _records = {for (var r in list) HabitRecord.dateOnly(r.date): r};
+    _records = {for (var r in list) HabitRecordModel.dateOnly(r.date): r};
     notifyListeners();
   }
 
   // 添加/删除记录
-  Future<void> togglePeriod(DateTime day, TimePeriod period) async {
-    final dateOnly = HabitRecord.dateOnly(day);
+  Future<void> togglePeriod(DateTime day, TimePeriodModel period) async {
+    final dateOnly = HabitRecordModel.dateOnly(day);
 
     // 1. 获取当天记录（可空）
-    HabitRecord? record = _records[dateOnly];
+    HabitRecordModel? record = _records[dateOnly];
 
     if (record == null) {
       // 第一次添加记录
-      record = HabitRecord(date: dateOnly);
+      record = HabitRecordModel(date: dateOnly);
       record.addPeriod(period);
       _records[dateOnly] = record;
       await _repo.saveRecord(record);

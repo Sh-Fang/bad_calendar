@@ -1,16 +1,16 @@
 // lib/views/widgets/day_cell.dart
-import 'package:bad_calendar/models/time_period.dart';
+import 'package:bad_calendar/models/time_period_model.dart';
 import 'package:bad_calendar/view_models/habit_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class DayCell extends StatelessWidget {
+class DayCellWidget extends StatelessWidget {
   final DateTime day;
   final bool isSelected;
   final bool isToday;
   final Color? backgroundColor; // 新增参数
 
-  const DayCell({
+  const DayCellWidget({
     super.key,
     required this.day,
     required this.isSelected,
@@ -53,7 +53,7 @@ class DayCell extends StatelessWidget {
             height: 12,
             child: Row(
               children:
-                  TimePeriod.values.map((period) {
+                  TimePeriodModel.values.map((period) {
                     final color = viewModel.getCellColor(day, period);
 
                     return Expanded(

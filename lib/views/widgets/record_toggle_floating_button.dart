@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../view_models/habit_view_model.dart';
 
-class RecordToggleButton extends StatelessWidget {
-  const RecordToggleButton({super.key});
+class RecordToggleFloatingButton extends StatelessWidget {
+  const RecordToggleFloatingButton({super.key});
 
   @override
   Widget build(BuildContext context) {

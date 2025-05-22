@@ -1,33 +1,36 @@
 // lib/models/habit_record.dart
-import 'time_period.dart';
+import 'time_period_model.dart';
 
-class HabitRecord {
+class HabitRecordModel {
   final DateTime date;
-  final Set<TimePeriod> recordedPeriods;
+  final Set<TimePeriodModel> recordedPeriods;
 
-  HabitRecord({required this.date, Set<TimePeriod>? recordedPeriods})
+  HabitRecordModel({required this.date, Set<TimePeriodModel>? recordedPeriods})
     : recordedPeriods = recordedPeriods ?? {};
 
   // 深拷贝构造函数
-  HabitRecord copyWith({DateTime? date, Set<TimePeriod>? recordedPeriods}) {
-    return HabitRecord(
+  HabitRecordModel copyWith({
+    DateTime? date,
+    Set<TimePeriodModel>? recordedPeriods,
+  }) {
+    return HabitRecordModel(
       date: date ?? this.date,
       recordedPeriods: recordedPeriods ?? Set.from(this.recordedPeriods),
     );
   }
 
   // 添加时间段记录
-  void addPeriod(TimePeriod period) {
+  void addPeriod(TimePeriodModel period) {
     recordedPeriods.add(period);
   }
 
   // 删除时间段记录
-  void removePeriod(TimePeriod period) {
+  void removePeriod(TimePeriodModel period) {
     recordedPeriods.remove(period);
   }
 
   // 判断某个时间段是否已记录
-  bool hasPeriod(TimePeriod period) {
+  bool hasPeriod(TimePeriodModel period) {
     return recordedPeriods.contains(period);
   }
 
@@ -41,14 +44,14 @@ class HabitRecord {
     };
   }
 
-  factory HabitRecord.fromMap(Map<String, dynamic> map) {
-    return HabitRecord(
+  factory HabitRecordModel.fromMap(Map<String, dynamic> map) {
+    return HabitRecordModel(
       date: DateTime.parse(map['date']),
       recordedPeriods:
           (map['periods'] as String)
               .split(',')
               .where((s) => s.isNotEmpty)
-              .map((s) => TimePeriod.values[int.parse(s)])
+              .map((s) => TimePeriodModel.values[int.parse(s)])
               .toSet(),
     );
   }

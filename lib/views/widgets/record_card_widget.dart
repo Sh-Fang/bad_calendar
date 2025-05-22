@@ -1,12 +1,12 @@
 // lib/views/widgets/record_card.dart
 import 'package:flutter/material.dart';
-import 'package:bad_calendar/models/time_period.dart';
+import 'package:bad_calendar/models/time_period_model.dart';
 import 'package:flutter/services.dart';
 
 class RecordCard extends StatelessWidget {
   final DateTime date;
-  final Set<TimePeriod> periods;
-  final void Function(TimePeriod period) onDeletePeriod; // 新增回调
+  final Set<TimePeriodModel> periods;
+  final void Function(TimePeriodModel period) onDeletePeriod; // 新增回调
 
   const RecordCard({
     super.key,
@@ -51,7 +51,7 @@ class RecordCard extends StatelessWidget {
   }
 
   void _showDeleteDialog(BuildContext context) {
-    TimePeriod? selected;
+    TimePeriodModel? selected;
 
     showDialog(
       context: context,
@@ -64,7 +64,7 @@ class RecordCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children:
                     periods.map((p) {
-                      return RadioListTile<TimePeriod>(
+                      return RadioListTile<TimePeriodModel>(
                         title: periodToIcon(p),
                         value: p,
                         groupValue: selected,

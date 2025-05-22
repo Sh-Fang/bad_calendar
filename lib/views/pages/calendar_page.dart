@@ -1,8 +1,9 @@
 // lib/views/pages/calendar_page.dart
 import 'package:bad_calendar/views/widgets/add_record_button.dart';
-import 'package:bad_calendar/views/widgets/day_cell.dart';
-import 'package:bad_calendar/views/widgets/record_toggle_button.dart';
+import 'package:bad_calendar/views/widgets/day_cell_widget.dart';
+import 'package:bad_calendar/views/widgets/record_toggle_floating_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../view_models/habit_view_model.dart';
@@ -50,6 +51,7 @@ class CalendarPage extends StatelessWidget {
                       isSameDay(day, viewModel.selectedDay),
 
               onDaySelected: (selectedDay, focusedDay) {
+                HapticFeedback.lightImpact();
                 viewModel.setSelectedDay(selectedDay);
               },
 
@@ -59,14 +61,23 @@ class CalendarPage extends StatelessWidget {
 
               calendarBuilders: CalendarBuilders(
                 defaultBuilder:
-                    (context, day, focusedDay) =>
-                        DayCell(day: day, isSelected: false, isToday: false),
+                    (context, day, focusedDay) => DayCellWidget(
+                      day: day,
+                      isSelected: false,
+                      isToday: false,
+                    ),
                 selectedBuilder:
-                    (context, day, focusedDay) =>
-                        DayCell(day: day, isSelected: true, isToday: false),
+                    (context, day, focusedDay) => DayCellWidget(
+                      day: day,
+                      isSelected: true,
+                      isToday: false,
+                    ),
                 todayBuilder:
-                    (context, day, focusedDay) =>
-                        DayCell(day: day, isSelected: false, isToday: true),
+                    (context, day, focusedDay) => DayCellWidget(
+                      day: day,
+                      isSelected: false,
+                      isToday: true,
+                    ),
               ),
 
               startingDayOfWeek: StartingDayOfWeek.monday,
@@ -81,7 +92,7 @@ class CalendarPage extends StatelessWidget {
 
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 30, right: 20),
-        child: RecordToggleButton(),
+        child: RecordToggleFloatingButton(),
       ),
     );
   }

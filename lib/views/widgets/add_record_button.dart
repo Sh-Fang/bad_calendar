@@ -1,6 +1,7 @@
-import 'package:bad_calendar/models/time_period.dart';
+import 'package:bad_calendar/models/time_period_model.dart';
 import 'package:bad_calendar/view_models/habit_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class AddRecordButton extends StatelessWidget {
@@ -13,10 +14,11 @@ class AddRecordButton extends StatelessWidget {
     return IconButton(
       icon: const Icon(Icons.add),
       onPressed: () {
+        HapticFeedback.lightImpact();
         showDialog(
           context: context,
           builder: (context) {
-            TimePeriod selectedPeriod = TimePeriod.morning;
+            TimePeriodModel selectedPeriod = TimePeriodModel.morning;
 
             return StatefulBuilder(
               builder: (context, setState) {
@@ -25,13 +27,14 @@ class AddRecordButton extends StatelessWidget {
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
                     children:
-                        TimePeriod.values.map((period) {
-                          return RadioListTile<TimePeriod>(
+                        TimePeriodModel.values.map((period) {
+                          return RadioListTile<TimePeriodModel>(
                             title: periodToIcon(period),
                             value: period,
                             groupValue: selectedPeriod,
                             onChanged: (value) {
                               if (value != null) {
+                                HapticFeedback.lightImpact();
                                 setState(() {
                                   selectedPeriod = value;
                                 });
@@ -43,12 +46,14 @@ class AddRecordButton extends StatelessWidget {
                   actions: [
                     TextButton(
                       onPressed: () {
+                        HapticFeedback.lightImpact();
                         Navigator.of(context).pop(); // 取消关闭
                       },
                       child: const Text('取消'),
                     ),
                     ElevatedButton(
                       onPressed: () {
+                        HapticFeedback.lightImpact();
                         final viewModel = Provider.of<HabitViewModel>(
                           context,
                           listen: false,
